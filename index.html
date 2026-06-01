@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+  <title>Relatório Diário de Obra</title>
+
+  <!-- import map for esm.sh libs (idb-keyval used for simple IndexedDB, jspdf for PDF export) -->
+  <script type="importmap">
+    {
+      "imports": {
+        "idb-keyval": "https://esm.sh/idb-keyval@6.2.0",
+        "jspdf": "https://esm.sh/jspdf@2.5.1"
+      }
+    }
+  </script>
+</head>
+<body>
+  <main id="app">
+    <header class="app-header">
+      <img id="siteLogo" src="" alt="Logo" class="logo hidden" />
+      <div class="header-actions">
+        <label class="logo-label">Adicionar logo
+          <input id="logoInput" type="file" accept="image/*" />
+        </label>
+        <button id="removeLogo" type="button" class="small-btn">Remover</button>
+      </div>
+    </header>
+    <form id="reportForm" autocomplete="off">
+      <div class="row">
+        <input id="date" name="date" type="date" required />
+        <select id="weather" name="weather">
+          <option value="ensolarado">Ensolarado</option>
+          <option value="nublado">Nublado</option>
+          <option value="chuva">Chuva</option>
+          <option value="vento">Vento</option>
+        </select>
+      </div>
+
+      <input id="project" name="project" type="text" placeholder="Obra / Projeto" required />
+
+      <textarea id="progress" name="progress" rows="3" placeholder="Progresso do dia"></textarea>
+      <textarea id="issues" name="issues" rows="2" placeholder="Problemas / Observações"></textarea>
+
+      <div class="row">
+        <input id="crew" name="crew" type="text" placeholder="Equipe (nomes / quantidade)" />
+        <input id="equipment" name="equipment" type="text" placeholder="Equipamentos em uso" />
+      </div>
+
+      <label class="file-label">
+        Fotos (tocar para tirar / escolher)
+        <input id="photos" name="photos" type="file" accept="image/*" capture="environment" multiple />
+      </label>
+
+      <div class="actions">
+        <button type="submit" id="saveBtn">Salvar</button>
+        <button type="button" id="clearBtn">Limpar</button>
+      </div>
+    </form>
+
+    <section id="listSection" aria-live="polite">
+      <div class="list-header">
+        <h2>Relatórios Salvos</h2>
+        <div class="list-actions">
+          <button id="exportAll">Exportar JSON</button>
+          <button id="shareLatest">Compartilhar Último</button>
+        </div>
+      </div>
+      <ul id="reportsList"></ul>
+    </section>
+  </main>
+
+  <template id="reportItemTpl">
+    <li class="report-item">
+      <div class="meta">
+        <strong class="proj"></strong>
+        <span class="date"></span>
+      </div>
+      <div class="mini">
+        <span class="weather"></span>
+        <span class="crew"></span>
+      </div>
+      <div class="actions-row">
+        <button class="view">Ver</button>
+        <button class="share">Compartilhar</button>
+        <button class="delete">Excluir</button>
+      </div>
+    </li>
+  </template>
+
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-body">
+      <button id="closeModal" class="modal-close">✕</button>
+      <div id="modalContent"></div>
+      <div class="modal-actions">
+        <button id="downloadJson">Baixar JSON</button>
+        <button id="downloadPdf">Baixar PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

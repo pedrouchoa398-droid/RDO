@@ -1,0 +1,9 @@
+{
+  "name": "Relatório Diário de Obra",
+  "short_name": "Relatório Obra",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f6f7f8",
+  "theme_color": "#2b8a3e",
+  "icons": []
+}
