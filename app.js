@@ -19,9 +19,9 @@ const downloadPdfBtn = document.getElementById("downloadPdf");
 const siteLogo = document.getElementById("siteLogo");
 const logoInput = document.getElementById("logoInput");
 const removeLogoBtn = document.getElementById("removeLogo");
-const LOGO_KEY = ID_PREFIX + "logo";
 
 const ID_PREFIX = "rdobra-";
+const LOGO_KEY = ID_PREFIX + "logo";
 
  // set default date to today
 document.getElementById("date").value = new Date().toISOString().slice(0,10);
@@ -104,8 +104,13 @@ function readFilesAsDataURL(files){
   return Promise.all(promises);
 }
 
-form.addEventListener("submit", async (e)=>{
-  e.preventDefault();
+saveBtn.addEventListener("click", async ()=>{
+  // validação manual
+  const dateVal = document.getElementById("date").value;
+  const projectVal = document.getElementById("project").value.trim();
+  if(!dateVal){ alert("Preencha a data."); return; }
+  if(!projectVal){ alert("Preencha o nome da obra/projeto."); return; }
+
   saveBtn.disabled = true;
   const formData = new FormData(form);
   const obj = {
@@ -209,19 +214,6 @@ function downloadPDF(data, key){
 
   addWrapped("Progresso", data.progress || "");
   addWrapped("Problemas / Observações", data.issues || "");
-
-  // photos
-  if(data.photos && data.photos.length>0){
-    for(const p of data.photos){
-      if(!p || !p.data) continue;
-      // estimate image dimensions by creating an image element
-      const img = new Image();
-      img.src = p.data;
-      // synchronous add via onload is not possible here without async; handle via promise
-      // collect promises to sequentially place images
-      // We'll block further processing until images added by using a chain of promises.
-    }
-  }
 
   // function to sequentially add images and then save
   (async ()=>{
